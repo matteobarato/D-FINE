@@ -4,38 +4,45 @@ evaluator:
   type: CocoEvaluator
   iou_types: ['bbox', ]
 
-num_classes: 777 # your dataset classes
+num_classes: 1
 remap_mscoco_category: False
 
 train_dataloader:
+  total_batch_size: 16
   type: DataLoader
   dataset:
-    type: CocoDetection
-    img_folder: /data/yourdataset/train
-    ann_file: /data/yourdataset/train/train.json
+    type: ConcatCocoDetection
+    datasets:
+      -
+        img_folder: /home/root/tec-mllab/data/Tiles_640_BirdDetection_SMALL-bird-flying-standing_COCO_20241018/images/
+        ann_file:  /home/root/tec-mllab/data/Tiles_640_BirdDetection_SMALL-bird-flying-standing_COCO_20241018/annotations/instances_train.json
+      - 
+        img_folder: /home/root/tec-mllab/data/Tiles_640_BirdDetection_SMALL-bird-flying-standing_COCO_20241018/images/
+        ann_file:  /home/root/tec-mllab/data/Tiles_640_BirdDetection_SMALL-bird-flying-standing_COCO_20241018/annotations/instances_train.json
     return_masks: False
     transforms:
       type: Compose
       ops: ~
   shuffle: True
-  num_workers: 4
+  num_workers: 8
   drop_last: True
   collate_fn:
     type: BatchImageCollateFunction
 
 
 val_dataloader:
+  total_batch_size: 16
   type: DataLoader
   dataset:
     type: CocoDetection
-    img_folder: /data/yourdataset/val
-    ann_file: /data/yourdataset/val/val.json
+    img_folder: /home/root/tec-mllab/data/Tiles_640_BirdDetection_SMALL-bird-flying-standing_COCO_20241018/images/
+    ann_file:  /home/root/tec-mllab/data/Tiles_640_BirdDetection_SMALL-bird-flying-standing_COCO_20241018/annotations/instances_val.json
     return_masks: False
     transforms:
       type: Compose
       ops: ~
   shuffle: False
-  num_workers: 4
+  num_workers: 8
   drop_last: False
   collate_fn:
     type: BatchImageCollateFunction
